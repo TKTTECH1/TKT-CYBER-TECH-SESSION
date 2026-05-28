@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TKT-CYBER-XMD - WhatsApp Pairing</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #00ff9d;
+            --bg: #0a0a0a;
+            --card-bg: #141414;
+            --text: #ffffff;
+            --text-dim: #a0a0a0;
+            --danger: #ff4444;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 500px;
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            border: 1px solid #333;
+        }
+
+        .badge {
+            display: inline-block;
+            background: var(--primary);
+            color: #000;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            font-size: 28px;
+            margin-bottom: 5px;
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: var(--text-dim);
+            margin-bottom: 30px;
+        }
+
+        p {
+            color: var(--text-dim);
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        input {
+            width: 100%;
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #333;
+            background: #1e1e1e;
+            color: white;
+            font-size: 16px;
+            box-sizing: border-box;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        input:focus {
+            border-color: var(--primary);
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            border-radius: 10px;
+            border: none;
+            background: var(--primary);
+            color: #000;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            transition: transform 0.2s, opacity 0.2s;
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        #result {
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: 10px;
+            background: #1e1e1e;
+            display: none;
+        }
+
+        .pair-code {
+            font-family: monospace;
+            font-size: 32px;
+            letter-spacing: 5px;
+            color: var(--primary);
+            margin: 15px 0;
+            display: block;
+        }
+
+        .loader {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #000;
+            border-bottom-color: transparent;
+            border-radius: 50%;
+            animation: rotation 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes rotation {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .warning {
+            background: rgba(255, 68, 68, 0.1);
+            border: 1px solid var(--danger);
+            color: var(--danger);
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            margin-bottom: 20px;
+        }
+
+        .footer {
+            margin-top: 20px;
+            font-size: 12px;
+            color: var(--text-dim);
+        }
+
+        .footer a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .success-message {
+            background: rgba(0, 255, 157, 0.1);
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            margin-bottom: 15px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <span class="badge">TKT-CYBER-XMD</span>
+        <h1>TKT-CYBER-XMD</h1>
+        <p class="subtitle">WhatsApp Pairing System</p>
+        
+        <div class="warning">
+            ⚠️ This pairing system is exclusively for <strong>TKT-CYBER-XMD</strong> bot only.
+        </div>
+
+        <div class="input-group">
+            <label for="number">WhatsApp Number (with country code)</label>
+            <input type="text" id="number" placeholder="e.g. 263712345678" required>
+        </div>
+
+        <button id="submitBtn">
+            <span id="btnText">GET PAIRING CODE</span>
+            <div class="loader" id="loader"></div>
+        </button>
+
+        <div id="result">
+            <div class="success-message" id="successMsg">
+                ✅ Pairing code generated successfully! Check your WhatsApp.
+            </div>
+            <span style="font-size: 14px; color: var(--text-dim);">Your Pairing Code:</span>
+            <span class="pair-code" id="pairCode">--------</span>
+            <p style="margin-bottom: 0; font-size: 12px;">Copy this code and enter it on your WhatsApp Linked Devices notification.</p>
+        </div>
+
+        <div class="footer">
+            <p>Powered by <a href="https://github.com/TKTTECH1/TKT-CYBER-XMD" target="_blank">TKT-CYBER-XMD</a></p>
+            <p>Owner: <strong>Tafadzwa Kureya</strong></p>
+        </div>
+    </div>
+
+    <script>
+        const submitBtn = document.getElementById('submitBtn');
+        const btnText = document.getElementById('btnText');
+        const loader = document.getElementById('loader');
+        const numberInput = document.getElementById('number');
+        const resultDiv = document.getElementById('result');
+        const pairCodeSpan = document.getElementById('pairCode');
+        const successMsg = document.getElementById('successMsg');
+
+        submitBtn.addEventListener('click', async () => {
+            const number = numberInput.value.replace(/[^0-9]/g, '');
+            if (!number) {
+                alert('Please enter a valid WhatsApp number');
+                return;
+            }
+
+            // UI State: Loading
+            submitBtn.disabled = true;
+            btnText.style.display = 'none';
+            loader.style.display = 'block';
+            resultDiv.style.display = 'none';
+            successMsg.style.display = 'none';
+
+            try {
+                const response = await fetch(`/pair?number=${number}`);
+                const data = await response.json();
+
+                if (data.code) {
+                    pairCodeSpan.innerText = data.code;
+                    resultDiv.style.display = 'block';
+                    successMsg.style.display = 'block';
+                } else if (data.error) {
+                    alert(`Error: ${data.message || data.error}`);
+                } else {
+                    alert('Failed to get code. Please try again.');
+                }
+            } catch (err) {
+                console.error('Error:', err);
+                alert('Error connecting to server. Please try again.');
+            } finally {
+                submitBtn.disabled = false;
+                btnText.style.display = 'block';
+                loader.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
